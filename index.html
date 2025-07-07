@@ -1,230 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ZenSwap</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      background-color: #d4f5dc;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZenSwap</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background-color: #2f8f58;
-      color: white;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    nav {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .wallet-btn {
-      background-color: #0b6d2b;
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    main {
-      padding: 2rem 1rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .swap-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
-    }
-
-    .input-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .input-row input,
-    .input-row select {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .arrow {
-      text-align: center;
-      font-size: 1.5rem;
-      margin: 1rem 0;
-    }
-
-    .swap-btn {
-      background-color: #0b6d2b;
-      color: white;
-      padding: 0.75rem;
-      width: 100%;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #2f8f58;
-      color: white;
-    }
-
-    @media (max-width: 600px) {
-      header {
+      body {
+        background-color: #d4f5dc; /* Light green background */
+        color: #000;
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        min-height: 100vh;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(34, 139, 34, 0.8); /* Transparent light green */
+        border-bottom: 1px solid #0b6d2b;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
       }
 
       nav {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        color: #e5ffe9;
+        text-decoration: none;
+      }
+
+      .wallet-btn {
+        background-color: #0b6d2b;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      main {
+        flex-grow: 1;
+        padding: 2rem 1rem;
+        display: flex;
         flex-direction: column;
-        margin-top: 1rem;
+        align-items: center;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="logo">ZenSwap</div>
-    <nav>
-      <a href="#">Trade</a>
-      <a href="#">Pools</a>
-      <a href="#">Faucet</a>
-      <a href="#">NFTs</a>
-      <a href="#">Bridge</a>
-    </nav>
-    <button class="wallet-btn" id="topConnect">Connect Wallet</button>
-  </header>
 
-  <main>
-    <section class="swap-box">
-      <div class="input-group">
-        <label>From</label>
-        <div class="input-row">
-          <input id="amountFrom" type="number" placeholder="0.0" />
-          <select>
-            <option>ZUSDT</option>
-          </select>
-        </div>
-      </div>
+      .swap-box {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-      <div class="arrow">↓</div>
+      .input-group {
+        margin-bottom: 1.5rem;
+      }
 
-      <div class="input-group">
-        <label>To</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" disabled />
-          <select>
-            <option>ZCT</option>
-          </select>
-        </div>
-      </div>
+      .input-row {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
 
-      <button class="swap-btn" onclick="swapToken()">Swap Now</button>
-    </section>
-  </main>
+      .input-row input,
+      .input-row select {
+        flex: 1;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
 
-  <footer>
-    <p>© 2025 ZenSwap. All rights reserved.</p>
-  </footer>
+      .arrow {
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 1rem 0;
+      }
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+      .connect-wallet {
+        width: 100%;
+        background-color: #0b6d2b;
+        color: #fff;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      footer {
+        background: rgba(34, 139, 34, 0.8);
+        text-align: center;
+        padding: 1rem;
+        color: #fff;
+      }
+
+      @media (max-width: 600px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        nav {
+          flex-direction: column;
+          width: 100%;
+          margin: 1rem 0;
+        }
+      }
+    </style>
+  </head>
   <script>
-    const connectButtons = document.querySelectorAll('.wallet-btn, .swap-btn');
-    const swapContractAddress = "0xYourSwapContractAddress"; // Ganti ini dengan alamat kontrak kamu
+  const swapContractAddress = "0xYourSwapContractAddress"; // Ganti ini!
+  const swapContractABI = [
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      ],
+      "name": "swapZUSDTtoZCT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
 
-    const swapContractABI = [
-      {
-        "inputs": [
-          { "internalType": "uint256", "name": "amount", "type": "uint256" }
-        ],
-        "name": "swapZUSDTtoZCT",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-    ];
+  let signer;
 
-    let signer;
+  async function connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+      return await signer.getAddress();
+    } else {
+      alert("Please install MetaMask!");
+    }
+  }
 
-    async function connectWallet() {
-      if (typeof window.ethereum === 'undefined') {
-        alert("Install MetaMask untuk melanjutkan");
-        return;
-      }
+  async function swapToken() {
+    const amountInput = document.getElementById("amountFrom");
+    const amount = amountInput.value;
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      signer = provider.getSigner();
-      const address = await signer.getAddress();
+    try {
+      await connectWallet();
+      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+      const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+      await tx.wait();
+      alert("Swap berhasil!");
+    } catch (err) {
+      console.error("Swap error:", err);
+      alert("Swap gagal: " + err.message);
+    }
+  }
+  </script>
+  
+  <body>
+    <header>
+      <div class="logo">ZenSwap</div>
+      <nav>
+        <a href="#">Trade</a>
+        <a href="#">Pools</a>
+        <a href="#">Faucet</a>
+        <a href="#">Nfts</a>
+        <a href="#">Bridge</a>
+      </nav>
+      <button class="wallet-btn" id="top-wallet-btn">Connect to a wallet</button>
+    </header>
+
+    <main>
+      <section class="swap-box">
+        <div class="input-group">
+          <label>From</label>
+          <div class="input-row">
+            <input type="number" placeholder="0.0" />
+            <select>
+              <option>ZCT</option>
+              <option>ZETH</option>
+              <option>ZUSDT</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="input-group">
+          <label>To</label>
+          <div class="input-row">
+            <input type="number" placeholder="0.0" />
+            <select>
+              <option>Select Token</option>
+              <option>ZCT</option>
+              <option>ZETH</option>
+              <option>ZUSDT</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="connect-wallet">Connect Wallet</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 ZenSwap. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const connectButtons = document.querySelectorAll('.wallet-btn, .connect-wallet');
 
       connectButtons.forEach(btn => {
-        if (btn.classList.contains("wallet-btn")) {
-          btn.textContent = `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`;
-          btn.disabled = true;
-        }
+        btn.addEventListener('click', async () => {
+          if (typeof window.ethereum !== 'undefined') {
+            try {
+              const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+              connectButtons.forEach(b => {
+                b.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+                b.disabled = true;
+              });
+            } catch (error) {
+              console.error('User rejected connection:', error);
+              alert('Connection rejected.');
+            }
+          } else {
+            alert('MetaMask is not installed. Please install it to use this dApp!');
+            window.open('https://metamask.io/download.html', '_blank');
+          }
+        });
       });
-    }
-
-    async function swapToken() {
-      const input = document.getElementById("amountFrom");
-      const amount = input.value;
-
-      if (!amount || isNaN(amount) || Number(amount) <= 0) {
-        alert("Masukkan jumlah yang valid.");
-        return;
-      }
-
-      try {
-        await connectWallet();
-
-        const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-        const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
-        await tx.wait();
-        alert("✅ Swap berhasil!");
-      } catch (err) {
-        console.error(err);
-        alert("❌ Gagal swap: " + err.message);
-      }
-    }
-
-    // Auto-connect button
-    document.getElementById('topConnect').addEventListener('click', connectWallet);
-  </script>
-</body>
+    </script>
+  </body>
 </html>
