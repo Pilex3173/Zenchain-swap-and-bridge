@@ -1,105 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>ZenSwap</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <script>
-  const connectBtn = document.querySelector('.connect-wallet');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ZenSwap</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">ZenSwap</div>
+      <nav>
+        <a href="#">Trade</a>
+        <a href="#">Pools</a>
+        <a href="#">Faucet</a>
+        <a href="#">Nfts</a>
+        <a href="#">Bridge</a>
+      </nav>
+      <button class="wallet-btn">Connect to a wallet</button>
+    </header>
 
-  connectBtn.addEventListener('click', async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        connectBtn.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
-        connectBtn.disabled = true;
-      } catch (error) {
-        console.error('User rejected connection:', error);
-        alert('Connection rejected.');
-      }
-    } else {
-      alert('MetaMask is not installed. Please install it to use this dApp!');
-      window.open('https://metamask.io/download.html', '_blank');
-    }
-  });
-  </script>
-  </footer>
+    <main>
+      <section class="swap-box">
+        <div class="input-group">
+          <label>From</label>
+          <div class="input-row">
+            <input type="number" placeholder="0.0" />
+            <select>
+              <option>ZCT</option>
+              <option>ZETH</option>
+              <option>ZUSDT</option>
+            </select>
+          </div>
+        </div>
 
-    <script>
-      const connectBtn = document.querySelector('.connect-wallet');
+        <div class="arrow">↓</div>
 
-      connectBtn.addEventListener('click', async () => {
-        if (typeof window.ethereum !== 'undefined') {
-          try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            connectBtn.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
-            connectBtn.disabled = true;
-          } catch (error) {
-            console.error('User rejected connection:', error);
-            alert('Connection rejected.');
-          }
-        } else {
-          alert('MetaMask is not installed. Please install it to use this dApp!');
-          window.open('https://metamask.io/download.html', '_blank');
-        }
-      });
-    </script>
-  </body>
+        <div class="input-group">
+          <label>To</label>
+          <div class="input-row">
+            <input type="number" placeholder="0.0" />
+            <select>
+              <option>Select Token</option>
+              <option>ZCT</option>
+              <option>ZETH</option>
+              <option>ZUSDT</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="connect-wallet">Connect Wallet</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 ZenSwap. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript untuk wallet -->
+    <script>
+      const connectBtn = document.querySelector('.connect-wallet');
+
+      connectBtn.addEventListener('click', async () => {
+        if (typeof window.ethereum !== 'undefined') {
+          try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            connectBtn.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+            connectBtn.disabled = true;
+          } catch (error) {
+            console.error('User rejected connection:', error);
+            alert('Connection rejected.');
+          }
+        } else {
+          alert('MetaMask is not installed. Please install it to use this dApp!');
+          window.open('https://metamask.io/download.html', '_blank');
+        }
+      });
+    </script>
+  </body>
 </html>
-
-  <body>
-    <header>
-      <div class="logo">ZenSwap</div>
-      <nav>
-        <a href="#">Trade</a>
-        <a href="#">Pools</a>
-        <a href="#">Faucet</a>
-        <a href="#">Nfts</a>
-        <a href="#">Bridge</a>
-      </nav>
-      <button class="wallet-btn">Connect to a wallet</button>
-    </header>
-
-    <main>
-
-      <section class="swap-box">
-        <div class="input-group">
-          <label>From</label>
-          <div class="input-row">
-            <input type="number" placeholder="0.0" />
-            <select>
-              <option>ZCT</option>
-              <option>ZETH</option>
-              <option>ZUSDT</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="arrow">↓</div>
-
-        <div class="input-group">
-          <label>To</label>
-          <div class="input-row">
-            <input type="number" placeholder="0.0" />
-            <select>
-              <option>Select Token</option>
-              <option>ZCT</option>
-              <option>ZETH</option>
-              <option>ZUSDT</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="connect-wallet">Connect Wallet</button>
-      </section>
-    </main>
-
-    <footer>
-      <p>© 2025 ZenSwap. All rights reserved.</p>
-    </footer>
-  </body>
-</html>
-    ...
-    
