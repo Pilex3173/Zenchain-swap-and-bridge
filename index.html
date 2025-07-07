@@ -130,6 +130,54 @@
       }
     </style>
   </head>
+  <script>
+  const swapContractAddress = "0xYourSwapContractAddress"; // Ganti ini!
+  const swapContractABI = [
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      ],
+      "name": "swapZUSDTtoZCT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
+
+  let signer;
+
+  async function connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+      return await signer.getAddress();
+    } else {
+      alert("Please install MetaMask!");
+    }
+  }
+
+  async function swapToken() {
+    const amountInput = document.getElementById("amountFrom");
+    const amount = amountInput.value;
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+
+    try {
+      await connectWallet();
+      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+      const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+      await tx.wait();
+      alert("Swap berhasil!");
+    } catch (err) {
+      console.error("Swap error:", err);
+      alert("Swap gagal: " + err.message);
+    }
+  }
+  </script>
+  
   <body>
     <header>
       <div class="logo">ZenSwap</div>
