@@ -1,0 +1,131 @@
+
+* {
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #e0f7fa;
+  color: #004d40;
+  background-image: url("../images/watermark_faint.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #80deea;
+  border-bottom: 1px solid #4dd0e1;
+}
+
+header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00695c;
+}
+
+header nav a {
+  margin: 0 1rem;
+  color: #004d40;
+  text-decoration: none;
+}
+
+.wallet-btn {
+  background-color: #4db6ac;
+  color: #fff;
+  border: 1px solid #00796b;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner {
+  background: linear-gradient(to right, #4dd0e1, #26c6da);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.buy-btn {
+  background: #004d40;
+  color: #e0f7fa;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.swap-box {
+  background-color: #b2ebf2;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.input-row input,
+.input-row select {
+  flex: 1;
+  padding: 0.5rem;
+  background: #e0f2f1;
+  border: 1px solid #009688;
+  color: #004d40;
+  border-radius: 6px;
+}
+
+.arrow {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.connect-wallet {
+  width: 100%;
+  background-color: #00796b;
+  color: #fff;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+footer {
+  background: #80deea;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #4dd0e1;
+}
