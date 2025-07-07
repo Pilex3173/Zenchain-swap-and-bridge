@@ -6,6 +6,25 @@
     <title>ZenSwap</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
+  <script>
+  const connectBtn = document.querySelector('.connect-wallet');
+
+  connectBtn.addEventListener('click', async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        connectBtn.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+        connectBtn.disabled = true;
+      } catch (error) {
+        console.error('User rejected connection:', error);
+        alert('Connection rejected.');
+      }
+    } else {
+      alert('MetaMask is not installed. Please install it to use this dApp!');
+      window.open('https://metamask.io/download.html', '_blank');
+    }
+  });
+  </script>
   <body>
     <header>
       <div class="logo">ZenSwap</div>
