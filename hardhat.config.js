@@ -3,12 +3,12 @@ module.exports = {
   solidity: "0.8.20",
   networks: {
     zenchain: {
-      url: "https://rpc.zencahain.testnet", // ganti RPC nyata
-      accounts: ["0x83ba0c4b37cf06e99d2f07ff32750debb3b4fae521e49cc7454e9be7c3125fdb"]
+      url: "https://zenchain-testnet.api.onfinality.io/public",
+      accounts: ["0x33df525bd7dd787b4ceb82baca3b3d47c241d9a2"]
     },
     sepolia: {
       url: "https://rpc.sepolia.testnet",
-      accounts: ["0x83ba0c4b37cf06e99d2f07ff32750debb3b4fae521e49cc7454e9be7c3125fdb"]
+      accounts: ["0x33df525bd7dd787b4ceb82baca3b3d47c241d9a2"]
     }
   }
 };
