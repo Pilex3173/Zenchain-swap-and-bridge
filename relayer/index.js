@@ -5,7 +5,7 @@ const providerSep = new ethers.providers.JsonRpcProvider("https://rpc.sepolia.te
 const bridgeSenderAddr = "ALAMAT_BRIDGE_SENDER";
 const bridgeReceiverAddr = "ALAMAT_BRIDGE_RECEIVER";
 const ethTokenAddr = "0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43";
-const relayerPrivKey = "0x83ba0c4b37cf06e99d2f07ff32750debb3b4fae521e49cc7454e9be7c3125fdb";
+const relayerPrivKey = "your_privatekey";
 
 const wallet = new ethers.Wallet(relayerPrivKey, providerSep);
 const receiver = new ethers.Contract(bridgeReceiverAddr, [
