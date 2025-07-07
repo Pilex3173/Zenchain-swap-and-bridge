@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: #0f111a;
-  color: #fff;
+  background-color: rgba(0, 255, 128, 0.1); /* hijau terang transparan */
+  color: #0a3d2e;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -16,69 +16,64 @@ body {
 
 header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: #13141f;
-  border-bottom: 1px solid #1e1f2b;
+  background: #092f25;
+  border-bottom: 1px solid #144738;
 }
 
-header .logo {
+.logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #cc00ff;
+  background: linear-gradient(90deg, #ffffff, #c0c0c0, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+}
+
+@keyframes shine {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 header nav a {
-  margin: 0 1rem;
-  color: #ccc;
+  color: #b7dcd4;
   text-decoration: none;
 }
 
 .wallet-btn {
-  background-color: #1d1e2b;
+  background-color: #144738;
   color: #fff;
-  border: 1px solid #444;
+  border: 1px solid #2f6f5c;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 main {
   flex-grow: 1;
-  padding: 2rem;
+  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.banner {
-  background: linear-gradient(to right, #ff416c, #ff4b2b);
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-}
-
-.buy-btn {
-  background: #fff;
-  color: #ff416c;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .swap-box {
-  background-color: #1a1c2e;
+  background-color: rgba(0, 255, 128, 0.15);
   border-radius: 12px;
   padding: 2rem;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
 .input-group {
@@ -96,8 +91,8 @@ main {
 .input-row select {
   flex: 1;
   padding: 0.5rem;
-  background: #292c3e;
-  border: 1px solid #444;
+  background: #2c6f5c;
+  border: 1px solid #3a9279;
   color: #fff;
   border-radius: 6px;
 }
@@ -110,7 +105,7 @@ main {
 
 .connect-wallet {
   width: 100%;
-  background-color: #31324d;
+  background-color: #2f6f5c;
   color: #fff;
   padding: 0.75rem;
   border: none;
@@ -120,8 +115,26 @@ main {
 }
 
 footer {
-  background: #13141f;
+  background: #092f25;
   text-align: center;
   padding: 1rem;
-  border-top: 1px solid #1e1f2b;
+  border-top: 1px solid #144738;
+  color: #ccc;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 1rem;
+  }
+
+  .swap-box {
+    padding: 1.5rem;
+  }
 }
