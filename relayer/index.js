@@ -1,23 +1,37 @@
-const { ethers } = require("ethers");
-const senderAbi = [ "event TokenLocked(address,uint256,address)" ];
-const providerZen = new ethers.providers.JsonRpcProvider("https://rpc.zencahain.testnet");
-const providerSep = new ethers.providers.JsonRpcProvider("https://rpc.sepolia.testnet");
-const bridgeSenderAddr = "ALAMAT_BRIDGE_SENDER";
-const bridgeReceiverAddr = "ALAMAT_BRIDGE_RECEIVER";
-const ethTokenAddr = "0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43";
-const relayerPrivKey = "your_privatekey";
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const { ethers } = require('ethers');
 
-const wallet = new ethers.Wallet(relayerPrivKey, providerSep);
-const receiver = new ethers.Contract(bridgeReceiverAddr, [
-  "function releaseETH(address to, uint256 amount) external"
-], wallet);
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-(async () => {
-  const zs = new ethers.Contract(bridgeSenderAddr, senderAbi, providerZen);
-  zs.on("TokenLocked", async (user, amount, targetAddress) => {
-    console.log("Locked:", user, amount.toString(), targetAddress);
-    const tx = await receiver.releaseETH(targetAddress, amount);
-    console.log("Released tx:", tx.hash);
-  });
-  console.log("Relayer running...");
-})();
+const provider = new ethers.providers.JsonRpcProvider(process.env.ZENCHAIN_RPC);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+
+const swapAbi = [
+  {
+    "inputs": [{"internalType": "uint256","name": "amount","type": "uint256"}],
+    "name": "swapZUSDTtoZCT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+
+const swapContract = new ethers.Contract(process.env.SWAP_ADDRESS, swapAbi, wallet);
+
+app.post('/swap', async (req, res) => {
+  try {
+    const amount = req.body.amount;
+    const tx = await swapContract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+    await tx.wait();
+    res.json({ txHash: tx.hash });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.listen(3000, () => console.log("Backend running on http://localhost:3000"));
