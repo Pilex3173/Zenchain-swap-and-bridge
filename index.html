@@ -240,30 +240,38 @@
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const { chainId } = await provider.getNetwork();
 
-    // 11155111 = Chain ID Sepolia
+    console.log("Connected to chainId:", chainId);
+
+    // Jika bukan Sepolia (chainId = 11155111)
     if (chainId !== 11155111) {
       try {
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xaa36a7' }] // Hex dari 11155111
+          params: [{ chainId: '0xaa36a7' }] // 11155111 dalam heksadesimal
         });
+        console.log("Switched to Sepolia");
       } catch (switchError) {
+        // Jika jaringan belum ditambahkan ke MetaMask
         if (switchError.code === 4902) {
           alert('Sepolia network belum ditambahkan di MetaMask.');
         } else {
           alert('Gagal switch ke Sepolia: ' + switchError.message);
-          return;
         }
+        return; // Pastikan fungsi berhenti di sini jika gagal switch
       }
     }
 
     await provider.send("eth_requestAccounts", []);
-    signer = provider.getSigner();
-    return await signer.getAddress();
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    console.log("Connected wallet address:", address);
+    return { signer, address };
   } else {
-    alert("Please install MetaMask!");
+    alert("MetaMask tidak terdeteksi. Silakan instal MetaMask!");
+    return null;
   }
     }
+    
 
     async function swapToken() {
       const amountInput = document.getElementById("amountFrom");
