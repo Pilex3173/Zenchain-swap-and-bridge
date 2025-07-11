@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZenSwap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PilexSwap</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
       * {
@@ -14,11 +14,39 @@
       }
 
       body {
-        background-color: #d4f5dc; /* Light green background */
-        color: #000;
+        background-color: #0a0a0a;
+        color: #ffffff;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Aurora effect background */
+      body::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, #00ffe0, #0088ff, #6600ff, #ff00cc);
+        background-size: 400% 400%;
+        animation: aurora 20s ease infinite;
+        opacity: 0.1;
+        z-index: 0;
+      }
+
+      @keyframes aurora {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      header, footer, main, .swap-box {
+        position: relative;
+        z-index: 1;
       }
 
       header {
@@ -26,15 +54,15 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 2rem;
-        background: rgba(34, 139, 34, 0.8); /* Transparent light green */
-        border-bottom: 1px solid #0b6d2b;
+        background: rgba(0, 0, 0, 0.7);
+        border-bottom: 1px solid #333;
         flex-wrap: wrap;
       }
 
       .logo {
         font-size: 1.5rem;
         font-weight: bold;
-        color: white;
+        color: #00ffcc;
       }
 
       nav {
@@ -44,12 +72,12 @@
       }
 
       nav a {
-        color: #e5ffe9;
+        color: #c0ffee;
         text-decoration: none;
       }
 
       .wallet-btn {
-        background-color: #0b6d2b;
+        background-color: #00cc99;
         color: #fff;
         border: none;
         padding: 0.5rem 1rem;
@@ -66,12 +94,13 @@
       }
 
       .swap-box {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.05);
         border-radius: 12px;
         padding: 2rem;
         width: 100%;
         max-width: 500px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        backdrop-filter: blur(10px);
       }
 
       .input-group {
@@ -89,7 +118,9 @@
         flex: 1;
         padding: 0.5rem;
         border-radius: 6px;
-        border: 1px solid #ccc;
+        border: 1px solid #444;
+        background-color: #111;
+        color: #fff;
       }
 
       .arrow {
@@ -100,7 +131,7 @@
 
       .connect-wallet {
         width: 100%;
-        background-color: #0b6d2b;
+        background-color: #00cc99;
         color: #fff;
         padding: 0.75rem;
         border: none;
@@ -110,10 +141,10 @@
       }
 
       footer {
-        background: rgba(34, 139, 34, 0.8);
+        background: rgba(0, 0, 0, 0.6);
         text-align: center;
         padding: 1rem;
-        color: #fff;
+        color: #ccc;
       }
 
       @media (max-width: 600px) {
@@ -130,62 +161,15 @@
       }
     </style>
   </head>
-  <script>
-  const swapContractAddress = "0xYourSwapContractAddress"; // Ganti ini!
-  const swapContractABI = [
-    {
-      "inputs": [
-        { "internalType": "uint256", "name": "amount", "type": "uint256" }
-      ],
-      "name": "swapZUSDTtoZCT",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ];
 
-  let signer;
-
-  async function connectWallet() {
-    if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      signer = provider.getSigner();
-      return await signer.getAddress();
-    } else {
-      alert("Please install MetaMask!");
-    }
-  }
-
-  async function swapToken() {
-    const amountInput = document.getElementById("amountFrom");
-    const amount = amountInput.value;
-    if (!amount || isNaN(amount) || Number(amount) <= 0) {
-      alert("Please enter a valid amount.");
-      return;
-    }
-
-    try {
-      await connectWallet();
-      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-      const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
-      await tx.wait();
-      alert("Swap berhasil!");
-    } catch (err) {
-      console.error("Swap error:", err);
-      alert("Swap gagal: " + err.message);
-    }
-  }
-  </script>
-  
   <body>
     <header>
-      <div class="logo">ZenSwap</div>
+      <div class="logo">PilexSwap</div>
       <nav>
         <a href="#">Trade</a>
         <a href="#">Pools</a>
         <a href="#">Faucet</a>
-        <a href="#">Nfts</a>
+        <a href="#">NFTs</a>
         <a href="#">Bridge</a>
       </nav>
       <button class="wallet-btn" id="top-wallet-btn">Connect to a wallet</button>
@@ -196,7 +180,7 @@
         <div class="input-group">
           <label>From</label>
           <div class="input-row">
-            <input type="number" placeholder="0.0" />
+            <input type="number" placeholder="0.0" id="amountFrom"/>
             <select>
               <option>ZCT</option>
               <option>ZETH</option>
@@ -220,7 +204,7 @@
           </div>
         </div>
 
-        <button class="connect-wallet">Connect Wallet</button>
+        <button class="connect-wallet" onclick="swapToken()">Swap</button>
       </section>
     </main>
 
@@ -228,9 +212,53 @@
       <p>© 2025 ZenSwap. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
     <script>
-      const connectButtons = document.querySelectorAll('.wallet-btn, .connect-wallet');
+      const swapContractAddress = "0x2E0923bB3F1A6B2545574204670DF6E220ed4227"; // Ganti!
+      const swapContractABI = [
+        {
+          "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+          "name": "swapZUSDTtoZCT",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ];
 
+      let signer;
+
+      async function connectWallet() {
+        if (typeof window.ethereum !== 'undefined') {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          signer = provider.getSigner();
+          return await signer.getAddress();
+        } else {
+          alert("Please install MetaMask!");
+        }
+      }
+
+      async function swapToken() {
+        const amountInput = document.getElementById("amountFrom");
+        const amount = amountInput.value;
+        if (!amount || isNaN(amount) || Number(amount) <= 0) {
+          alert("Please enter a valid amount.");
+          return;
+        }
+
+        try {
+          await connectWallet();
+          const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+          const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+          await tx.wait();
+          alert("Swap berhasil!");
+        } catch (err) {
+          console.error("Swap error:", err);
+          alert("Swap gagal: " + err.message);
+        }
+      }
+
+      const connectButtons = document.querySelectorAll('.wallet-btn, .connect-wallet');
       connectButtons.forEach(btn => {
         btn.addEventListener('click', async () => {
           if (typeof window.ethereum !== 'undefined') {
