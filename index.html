@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PilexSwap</title>
-  <link rel="stylesheet" href="styles.css" />
   <style>
     * {
       box-sizing: border-box;
@@ -13,17 +12,20 @@
       padding: 0;
     }
 
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       background-color: #0a0a0a;
-      color: #ccfffd; /* Aurora white */
+      color: #ccfffd;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       position: relative;
-      overflow-x: hidden;
     }
 
-    /* Aurora effect background */
     body::before {
       content: "";
       position: absolute;
@@ -60,69 +62,64 @@
     }
 
     .logo {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
-      color: #00ffe0;
+      color: #00ffcc;
     }
 
     nav {
       display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
     nav a {
       color: #ccfffd;
       text-decoration: none;
-      font-size: 1rem;
     }
 
     .wallet-btn {
       background-color: #00cc99;
       color: #fff;
       border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
       cursor: pointer;
-      margin-top: 0.5rem;
     }
 
     main {
       flex-grow: 1;
-      padding: 3rem 1rem;
+      padding: 2rem 1rem;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
     }
 
     .swap-box {
       background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 2rem;
       width: 100%;
-      max-width: 600px;
+      max-width: 500px;
       box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
       backdrop-filter: blur(10px);
     }
 
     .input-group {
-      margin-bottom: 1.8rem;
-    }
-
-    .input-group label {
-      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
     }
 
     .input-row {
       display: flex;
       gap: 1rem;
       margin-top: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .input-row input,
     .input-row select {
       flex: 1;
-      padding: 0.6rem;
+      padding: 0.5rem;
       border-radius: 6px;
       border: 1px solid #444;
       background-color: #111;
@@ -131,17 +128,17 @@
 
     .arrow {
       text-align: center;
-      font-size: 1.8rem;
-      margin: 1.5rem 0;
+      font-size: 1.5rem;
+      margin: 1rem 0;
     }
 
     .connect-wallet {
       width: 100%;
       background-color: #00cc99;
       color: #fff;
-      padding: 0.8rem;
+      padding: 0.75rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
     }
@@ -150,10 +147,10 @@
       background: rgba(0, 0, 0, 0.6);
       text-align: center;
       padding: 1rem;
-      color: #aaa;
+      color: #ccc;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       header {
         flex-direction: column;
         align-items: flex-start;
@@ -163,15 +160,10 @@
         flex-direction: column;
         width: 100%;
         margin: 1rem 0;
-        gap: 0.75rem;
       }
 
-      .wallet-btn {
-        align-self: flex-start;
-      }
-
-      .swap-box {
-        padding: 1.5rem;
+      .input-row {
+        flex-direction: column;
       }
     }
   </style>
@@ -195,7 +187,7 @@
       <div class="input-group">
         <label>From</label>
         <div class="input-row">
-          <input type="number" placeholder="0.0" id="amountFrom" />
+          <input type="number" placeholder="0.0" id="amountFrom"/>
           <select>
             <option>ZCT</option>
             <option>ZETH</option>
@@ -224,7 +216,7 @@
   </main>
 
   <footer>
-    <p>© 2025 PilexSwap. All rights reserved.</p>
+    <p>© 2025 ZenSwap. All rights reserved.</p>
   </footer>
 
   <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
