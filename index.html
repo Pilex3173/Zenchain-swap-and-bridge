@@ -236,14 +236,33 @@
     let signer;
 
     async function connectWallet() {
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        signer = provider.getSigner();
-        return await signer.getAddress();
-      } else {
-        alert("Please install MetaMask!");
-      }
+  if (typeof window.ethereum !== 'undefined') {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const { chainId } = await provider.getNetwork();
+
+    // 11155111 = Chain ID Sepolia
+    if (chainId !== 11155111) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0xaa36a7' }] // Hex dari 11155111
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          alert('Sepolia network belum ditambahkan di MetaMask.');
+        } else {
+          alert('Gagal switch ke Sepolia: ' + switchError.message);
+          return;
+        }
+      }
+    }
+
+    await provider.send("eth_requestAccounts", []);
+    signer = provider.getSigner();
+    return await signer.getAddress();
+  } else {
+    alert("Please install MetaMask!");
+  }
     }
 
     async function swapToken() {
