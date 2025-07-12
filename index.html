@@ -4,225 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PilexSwap</title>
-  
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
     body {
+      font-family: Arial, sans-serif;
       background-color: #0a0a0a;
       color: #ccfffd;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, #00ffe0, #0088ff, #6600ff, #ff00cc);
-      background-size: 400% 400%;
-      animation: aurora 20s ease infinite;
-      opacity: 0.1;
-      z-index: 0;
-    }
-
-    @keyframes aurora {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    header, footer, main, .swap-box {
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(0, 0, 0, 0.7);
-      border-bottom: 1px solid #333;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #00ffcc;
-    }
-
-    nav {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: #ccfffd;
-      text-decoration: none;
-    }
-
-    .wallet-btn {
-      background-color: #00cc99;
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    main {
-      flex-grow: 1;
-      padding: 2rem 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
+      padding: 2rem;
     }
 
     .swap-box {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
       padding: 2rem;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    input, select, button {
       width: 100%;
-      max-width: 500px;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-      backdrop-filter: blur(10px);
-    }
-
-    .input-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .input-row input,
-    .input-row select {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #444;
-      background-color: #111;
-      color: #ccfffd;
-    }
-
-    .arrow {
-      text-align: center;
-      font-size: 1.5rem;
-      margin: 1rem 0;
-    }
-
-    .connect-wallet {
-      width: 100%;
-      background-color: #00cc99;
-      color: #fff;
-      padding: 0.75rem;
+      margin-top: 1rem;
+      padding: 0.7rem;
       border: none;
       border-radius: 6px;
-      font-size: 1rem;
+    }
+
+    button {
+      background-color: #00cc99;
+      color: white;
       cursor: pointer;
-    }
-
-    footer {
-      background: rgba(0, 0, 0, 0.6);
-      text-align: center;
-      padding: 1rem;
-      color: #ccc;
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        flex-direction: column;
-        width: 100%;
-        margin: 1rem 0;
-      }
-
-      .input-row {
-        flex-direction: column;
-      }
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">PilexSwap</div>
-    <nav>
-  <a href="index.html">Trade</a>
-  <a href="pools.html">Pools</a>
-  <a href="faucet.html">Faucet</a>
-  <a href="nfts.html">NFTs</a>
-  <a href="bridge.html">Bridge</a>
-    </nav>
-    <button class="wallet-btn" id="top-wallet-btn">Connect to a wallet</button>
-  </header>
-
-  <main>
-    <section class="swap-box">
-      <div class="input-group">
-        <label>From</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" id="amountFrom"/>
-          <select>
-            <option>ZCT</option>
-            <option>ZETH</option>
-            <option>ZUSDT</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="arrow">↓</div>
-
-      <div class="input-group">
-        <label>To</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" />
-          <select>
-            <option>Select Token</option>
-            <option>ZCT</option>
-            <option>ZETH</option>
-            <option>ZUSDT</option>
-          </select>
-        </div>
-      </div>
-
-      <button class="connect-wallet" onclick="swapToken()">Swap</button>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 ZenSwap. All rights reserved.</p>
-  </footer>
+  <h1>PilexSwap (Sepolia)</h1>
+  <div class="swap-box">
+    <input type="number" id="amountFrom" placeholder="Amount ZUSDT" />
+    <button onclick="swapToken()">Swap to ZCT</button>
+    <button onclick="connectWallet()">🔌 Connect Wallet</button>
+  </div>
 
   <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
   <script>
-    const swapContractAddress = "0x2E0923bB3F1A6B2545574204670DF6E220ed4227";
+    const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
+    const zusdtAddress = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
+
     const swapContractABI = [
       {
         "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
@@ -233,86 +59,76 @@
       }
     ];
 
+    const zusdtABI = [
+      {
+        "constant": false,
+        "inputs": [
+          { "name": "_spender", "type": "address" },
+          { "name": "_value", "type": "uint256" }
+        ],
+        "name": "approve",
+        "outputs": [{ "name": "", "type": "bool" }],
+        "type": "function"
+      }
+    ];
+
     let signer;
 
     async function connectWallet() {
-  if (typeof window.ethereum !== 'undefined') {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const { chainId } = await provider.getNetwork();
+      if (typeof window.ethereum === 'undefined') {
+        alert("Install MetaMask dulu!");
+        return;
+      }
 
-    console.log("Connected to chainId:", chainId);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const { chainId } = await provider.getNetwork();
 
-    // Jika bukan Sepolia (chainId = 11155111)
-    if (chainId !== 11155111) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xaa36a7' }] // 11155111 dalam heksadesimal
-        });
-        console.log("Switched to Sepolia");
-      } catch (switchError) {
-        // Jika jaringan belum ditambahkan ke MetaMask
-        if (switchError.code === 4902) {
-          alert('Sepolia network belum ditambahkan di MetaMask.');
-        } else {
-          alert('Gagal switch ke Sepolia: ' + switchError.message);
-        }
-        return; // Pastikan fungsi berhenti di sini jika gagal switch
-      }
-    }
+      if (chainId !== 11155111) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0xaa36a7' }]
+          });
+        } catch (err) {
+          alert("Switch ke Sepolia gagal: " + err.message);
+          return;
+        }
+      }
 
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-    const address = await signer.getAddress();
-    console.log("Connected wallet address:", address);
-    return { signer, address };
-  } else {
-    alert("MetaMask tidak terdeteksi. Silakan instal MetaMask!");
-    return null;
-  }
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+      const address = await signer.getAddress();
+      alert("Wallet terhubung: " + address);
     }
-    
+
+    async function approveZUSDT(amount) {
+      const contract = new ethers.Contract(zusdtAddress, zusdtABI, signer);
+      const tx = await contract.approve(swapContractAddress, amount);
+      await tx.wait();
+    }
 
     async function swapToken() {
-      const amountInput = document.getElementById("amountFrom");
-      const amount = amountInput.value;
+      const amount = document.getElementById("amountFrom").value;
       if (!amount || isNaN(amount) || Number(amount) <= 0) {
-        alert("Please enter a valid amount.");
+        alert("Masukkan jumlah yang valid.");
         return;
       }
 
       try {
+        const parsed = ethers.utils.parseUnits(amount, 18);
         await connectWallet();
+        await approveZUSDT(parsed);
+
         const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-        const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+        const tx = await contract.swapZUSDTtoZCT(parsed);
         await tx.wait();
+
         alert("Swap berhasil!");
       } catch (err) {
-        console.error("Swap error:", err);
+        console.error(err);
         alert("Swap gagal: " + err.message);
       }
     }
-
-    const connectButtons = document.querySelectorAll('.wallet-btn, .connect-wallet');
-    connectButtons.forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (typeof window.ethereum !== 'undefined') {
-          try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            connectButtons.forEach(b => {
-              b.textContent = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
-              b.disabled = true;
-            });
-          } catch (error) {
-            console.error('User rejected connection:', error);
-            alert('Connection rejected.');
-          }
-        } else {
-          alert('MetaMask is not installed. Please install it to use this dApp!');
-          window.open('https://metamask.io/download.html', '_blank');
-        }
-      });
-    });
   </script>
 </body>
 </html>
