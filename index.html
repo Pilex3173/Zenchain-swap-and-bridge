@@ -5,44 +5,208 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PilexSwap</title>
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
-      font-family: Arial, sans-serif;
       background-color: #0a0a0a;
       color: #ccfffd;
-      text-align: center;
-      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, #00ffe0, #0088ff, #6600ff, #ff00cc);
+      background-size: 400% 400%;
+      animation: aurora 20s ease infinite;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    @keyframes aurora {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header, footer, main, .swap-box {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid #333;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ccfffd;
+      text-decoration: none;
+    }
+
+    .wallet-btn {
+      background-color: #00cc99;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .swap-box {
-      background: rgba(255,255,255,0.05);
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
       padding: 2rem;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+      backdrop-filter: blur(10px);
     }
 
-    input, select, button {
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .input-row input,
+    .input-row select {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #111;
+      color: #ccfffd;
+    }
+
+    .arrow {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .connect-wallet {
       width: 100%;
-      margin-top: 1rem;
-      padding: 0.7rem;
+      background-color: #00cc99;
+      color: #fff;
+      padding: 0.75rem;
       border: none;
       border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
     }
 
-    button {
-      background-color: #00cc99;
-      color: white;
-      cursor: pointer;
+    footer {
+      background: rgba(0, 0, 0, 0.6);
+      text-align: center;
+      padding: 1rem;
+      color: #ccc;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        margin: 1rem 0;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>PilexSwap (Sepolia)</h1>
-  <div class="swap-box">
-    <input type="number" id="amountFrom" placeholder="Amount ZUSDT" />
-    <button onclick="swapToken()">Swap to ZCT</button>
-    <button onclick="connectWallet()">🔌 Connect Wallet</button>
-  </div>
+  <header>
+    <div class="logo">PilexSwap</div>
+    <nav>
+      <a href="index.html">Trade</a>
+      <a href="pools.html">Pools</a>
+      <a href="faucet.html">Faucet</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="bridge.html">Bridge</a>
+    </nav>
+    <button class="wallet-btn" id="top-wallet-btn">Connect Wallet</button>
+  </header>
+
+  <main>
+    <section class="swap-box">
+      <div class="input-group">
+        <label>Swap from ZUSDT</label>
+        <div class="input-row">
+          <input type="number" placeholder="0.0" id="amountFrom" />
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="input-group">
+        <label>Receive ZCT</label>
+        <div class="input-row">
+          <input type="number" placeholder="Will auto match input" disabled />
+        </div>
+      </div>
+
+      <button class="connect-wallet" onclick="swapToken()">Swap</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 ZenSwap. All rights reserved.</p>
+  </footer>
 
   <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
   <script>
@@ -76,7 +240,7 @@
 
     async function connectWallet() {
       if (typeof window.ethereum === 'undefined') {
-        alert("Install MetaMask dulu!");
+        alert("MetaMask tidak ditemukan.");
         return;
       }
 
@@ -98,7 +262,13 @@
       await provider.send("eth_requestAccounts", []);
       signer = provider.getSigner();
       const address = await signer.getAddress();
-      alert("Wallet terhubung: " + address);
+
+      document.querySelectorAll('.wallet-btn').forEach(btn => {
+        btn.textContent = `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`;
+        btn.disabled = true;
+      });
+
+      return signer;
     }
 
     async function approveZUSDT(amount) {
@@ -115,8 +285,8 @@
       }
 
       try {
-        const parsed = ethers.utils.parseUnits(amount, 18);
         await connectWallet();
+        const parsed = ethers.utils.parseUnits(amount, 18);
         await approveZUSDT(parsed);
 
         const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
@@ -129,6 +299,10 @@
         alert("Swap gagal: " + err.message);
       }
     }
+
+    document.querySelectorAll('.wallet-btn').forEach(btn => {
+      btn.addEventListener('click', connectWallet);
+    });
   </script>
 </body>
 </html>
