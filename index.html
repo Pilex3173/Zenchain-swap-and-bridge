@@ -37,13 +37,15 @@
       <div class="input-group">
         <label>To</label>
         <div class="input-row">
-          <input type="number" placeholder="0.0" disabled id="amountTo" />
+          <input type="number" placeholder="0.0" disabled />
           <select id="toToken">
             <option value="ZCT">ZCT</option>
             <option value="ZUSDT">ZUSDT</option>
           </select>
         </div>
       </div>
+
+      <p id="rateInfo" style="text-align:center; color:#aaa; margin-bottom: 10px;">Rate: 1 ZUSDT = 100 ZCT</p>
 
       <button class="connect-wallet">Swap</button>
     </section>
@@ -53,15 +55,11 @@
     <p>© 2025 ZenSwap. All rights reserved.</p>
   </footer>
 
+  <!-- Script imports -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
   <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
   <script>
-    const tokenAddresses = {
-      ZUSDT: "0xAf8f71a176C3aDE603965E06Ce7100117411d919",
-      ZCT: "0xf8bff80BeCAc9939af1dBa3E587d0eA530D771c4"
-    };
-
     const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
     const swapContractABI = [
       {
@@ -74,6 +72,9 @@
     ];
 
     let web3Modal, provider, signer, userAddress;
+
+    const rateZUSDTtoZCT = 100;
+    const rateZCTtoZUSDT = 1 / rateZUSDTtoZCT;
 
     async function init() {
       const providerOptions = {
@@ -106,12 +107,8 @@
 
         const { chainId } = await provider.getNetwork();
         if (chainId !== 11155111) {
-          try {
-            await provider.send("wallet_switchEthereumChain", [{ chainId: "0xaa36a7" }]);
-          } catch (err) {
-            alert("Silakan ubah jaringan ke Sepolia secara manual.");
-            return false;
-          }
+          alert("Pastikan jaringan kamu adalah Sepolia!");
+          return false;
         }
 
         document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
@@ -121,16 +118,43 @@
 
         return true;
       } catch (err) {
-        console.error("Connect wallet failed:", err);
         alert("Gagal koneksi wallet: " + err.message);
         return false;
       }
+    }
+
+    function calculateSwapOutput() {
+      const amountFrom = parseFloat(document.getElementById("amountFrom").value) || 0;
+      const fromToken = document.getElementById("fromToken").value;
+      const toToken = document.getElementById("toToken").value;
+
+      let output = 0;
+      let rateText = "";
+
+      if (fromToken === "ZUSDT" && toToken === "ZCT") {
+        output = amountFrom * rateZUSDTtoZCT;
+        rateText = "Rate: 1 ZUSDT = 100 ZCT";
+      } else if (fromToken === "ZCT" && toToken === "ZUSDT") {
+        output = amountFrom * rateZCTtoZUSDT;
+        rateText = "Rate: 1 ZCT = 0.01 ZUSDT";
+      } else {
+        output = 0;
+        rateText = "Invalid token pair";
+      }
+
+      document.querySelector('#toToken').previousElementSibling.value = output.toFixed(2);
+      document.getElementById("rateInfo").textContent = rateText;
     }
 
     async function swapToken() {
       const amount = document.getElementById("amountFrom").value;
       const fromToken = document.getElementById("fromToken").value;
       const toToken = document.getElementById("toToken").value;
+
+      if (fromToken !== "ZUSDT" || toToken !== "ZCT") {
+        alert("Saat ini hanya mendukung swap ZUSDT ke ZCT.");
+        return;
+      }
 
       if (!amount || isNaN(amount) || Number(amount) <= 0) {
         alert("Masukkan jumlah yang valid.");
@@ -142,16 +166,9 @@
         if (!connected) return;
       }
 
-      const tokenAddress = tokenAddresses[fromToken];
-      const tokenContract = new ethers.Contract(tokenAddress, ["function approve(address spender, uint256 amount) public returns (bool)"], signer);
-      const swapAmount = ethers.utils.parseUnits(amount, 18);
-
+      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
       try {
-        const approveTx = await tokenContract.approve(swapContractAddress, swapAmount);
-        await approveTx.wait();
-
-        const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-        const tx = await contract.swapZUSDTtoZCT(swapAmount);
+        const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
         await tx.wait();
         alert("Swap berhasil!");
       } catch (err) {
@@ -163,6 +180,11 @@
       await init();
       document.getElementById('connectBtn').addEventListener('click', connectWallet);
       document.querySelector('.connect-wallet').addEventListener('click', swapToken);
+
+      // Tambahan: trigger kalkulasi saat user isi
+      document.getElementById("amountFrom").addEventListener("input", calculateSwapOutput);
+      document.getElementById("fromToken").addEventListener("change", calculateSwapOutput);
+      document.getElementById("toToken").addEventListener("change", calculateSwapOutput);
     });
   </script>
 </body>
