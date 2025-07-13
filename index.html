@@ -27,6 +27,7 @@
           <input type="number" placeholder="0.0" id="amountFrom" />
           <select id="fromToken">
             <option value="ZUSDT">ZUSDT</option>
+            <option value="ZCT">ZCT</option>
           </select>
         </div>
       </div>
@@ -36,9 +37,10 @@
       <div class="input-group">
         <label>To</label>
         <div class="input-row">
-          <input type="number" placeholder="0.0" disabled />
+          <input type="number" placeholder="0.0" disabled id="amountTo" />
           <select id="toToken">
             <option value="ZCT">ZCT</option>
+            <option value="ZUSDT">ZUSDT</option>
           </select>
         </div>
       </div>
@@ -51,13 +53,16 @@
     <p>© 2025 ZenSwap. All rights reserved.</p>
   </footer>
 
-  <!-- Script imports -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
   <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
   <script>
+    const tokenAddresses = {
+      ZUSDT: "0xAf8f71a176C3aDE603965E06Ce7100117411d919",
+      ZCT: "0xf8bff80BeCAc9939af1dBa3E587d0eA530D771c4"
+    };
+
     const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
-    const zusdtAddress = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
     const swapContractABI = [
       {
         inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
@@ -69,38 +74,6 @@
     ];
 
     let web3Modal, provider, signer, userAddress;
-
-    async function switchToSepolia() {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0xaa36a7' }]
-        });
-      } catch (switchError) {
-        if (switchError.code === 4902) {
-          try {
-            await window.ethereum.request({
-              method: 'wallet_addEthereumChain',
-              params: [{
-                chainId: '0xaa36a7',
-                chainName: 'Sepolia',
-                rpcUrls: ['https://rpc.sepolia.org'],
-                nativeCurrency: {
-                  name: 'Sepolia ETH',
-                  symbol: 'ETH',
-                  decimals: 18
-                },
-                blockExplorerUrls: ['https://sepolia.etherscan.io']
-              }]
-            });
-          } catch (addError) {
-            alert("Gagal menambahkan jaringan Sepolia.");
-          }
-        } else {
-          alert("Switch jaringan dibatalkan atau gagal.");
-        }
-      }
-    }
 
     async function init() {
       const providerOptions = {
@@ -133,7 +106,12 @@
 
         const { chainId } = await provider.getNetwork();
         if (chainId !== 11155111) {
-          await switchToSepolia();
+          try {
+            await provider.send("wallet_switchEthereumChain", [{ chainId: "0xaa36a7" }]);
+          } catch (err) {
+            alert("Silakan ubah jaringan ke Sepolia secara manual.");
+            return false;
+          }
         }
 
         document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
@@ -151,6 +129,9 @@
 
     async function swapToken() {
       const amount = document.getElementById("amountFrom").value;
+      const fromToken = document.getElementById("fromToken").value;
+      const toToken = document.getElementById("toToken").value;
+
       if (!amount || isNaN(amount) || Number(amount) <= 0) {
         alert("Masukkan jumlah yang valid.");
         return;
@@ -161,21 +142,17 @@
         if (!connected) return;
       }
 
-      const ERC20_ABI = [
-        "function approve(address spender, uint256 amount) public returns (bool)"
-      ];
+      const tokenAddress = tokenAddresses[fromToken];
+      const tokenContract = new ethers.Contract(tokenAddress, ["function approve(address spender, uint256 amount) public returns (bool)"], signer);
+      const swapAmount = ethers.utils.parseUnits(amount, 18);
 
       try {
-        const zusdt = new ethers.Contract(zusdtAddress, ERC20_ABI, signer);
-        const parsedAmount = ethers.utils.parseUnits(amount, 18);
-
-        const approvalTx = await zusdt.approve(swapContractAddress, parsedAmount);
-        await approvalTx.wait();
+        const approveTx = await tokenContract.approve(swapContractAddress, swapAmount);
+        await approveTx.wait();
 
         const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-        const tx = await contract.swapZUSDTtoZCT(parsedAmount);
+        const tx = await contract.swapZUSDTtoZCT(swapAmount);
         await tx.wait();
-
         alert("Swap berhasil!");
       } catch (err) {
         alert("Swap gagal: " + err.message);
