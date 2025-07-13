@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PilexSwap</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PilexSwap</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <div class="logo">PilexSwap</div>
-    <nav>
-      <a href="index.html">Trade</a>
-      <a href="pools.html">Pools</a>
-      <a href="faucet.html">Faucet</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="bridge.html">Bridge</a>
-    </nav>
-    <button class="wallet-btn" id="top-wallet-btn">Connect to a wallet</button>
-  </header>
+  <header>
+    <div class="logo">PilexSwap</div>
+    <nav>
+      <a href="index.html">Trade</a>
+      <a href="pools.html">Pools</a>
+      <a href="faucet.html">Faucet</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="bridge.html">Bridge</a>
+    </nav>
+    <button class="wallet-btn">Connect to a wallet</button>
+  </header>
 
-  <main>
-    <section class="swap-box">
-      <div class="input-group">
-        <label>From</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" id="amountFrom" />
-          <select id="fromToken">
-            <option value="ZUSDT">ZUSDT</option>
-          </select>
-        </div>
-      </div>
+  <main>
+    <section class="swap-box">
+      <div class="input-group">
+        <label>From</label>
+        <div class="input-row">
+          <input type="number" placeholder="0.0" id="amountFrom" />
+          <select id="fromToken">
+            <option value="ZUSDT">ZUSDT</option>
+          </select>
+        </div>
+      </div>
 
-      <div class="arrow">↓</div>
+      <div class="arrow">↓</div>
 
-      <div class="input-group">
-        <label>To</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" disabled />
-          <select id="toToken">
-            <option value="ZCT">ZCT</option>
-          </select>
-        </div>
-      </div>
+      <div class="input-group">
+        <label>To</label>
+        <div class="input-row">
+          <input type="number" placeholder="0.0" disabled />
+          <select id="toToken">
+            <option value="ZCT">ZCT</option>
+          </select>
+        </div>
+      </div>
 
-      <button class="connect-wallet" onclick="swapToken()">Swap</button>
-    </section>
-  </main>
+      <button class="connect-wallet">Swap</button>
+    </section>
+  </main>
 
-  <footer>
-    <p>© 2025 ZenSwap. All rights reserved.</p>
-  </footer>
+  <footer>
+    <p>© 2025 ZenSwap. All rights reserved.</p>
+  </footer>
 
-  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
-  <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
-  <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
-  <script src="script.js"></script>
+  <!-- Load Libraries -->
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+  <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
+  <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
 </body>
 </html>
