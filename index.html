@@ -52,7 +52,7 @@
   </footer>
 
   <!-- Script imports -->
-  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
   <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
   <script>
@@ -75,6 +75,12 @@
           package: window.WalletConnectProvider.default,
           options: {
             infuraId: "1c84a99f763144348d5fa28316d42b49"
+          }
+        },
+        injected: {
+          display: {
+            name: "MetaMask / OKX",
+            description: "Connect with MetaMask or OKX"
           }
         }
       };
