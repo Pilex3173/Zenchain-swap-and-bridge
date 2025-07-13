@@ -51,12 +51,10 @@
     <p>© 2025 ZenSwap. All rights reserved.</p>
   </footer>
 
-  <!-- Libs -->
-  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+  <!-- Script imports -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
   <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
-
-  <!-- App Logic -->
   <script>
     const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
     const swapContractABI = [
@@ -73,18 +71,18 @@
 
     async function init() {
       const providerOptions = {
-        injected: {
-          display: {
-            name: "Browser Wallet",
-            description: "Connect with MetaMask, OKX, Brave"
-          },
-          package: null
-        },
         walletconnect: {
           package: window.WalletConnectProvider.default,
           options: {
             infuraId: "1c84a99f763144348d5fa28316d42b49"
           }
+        },
+        injected: {
+          display: {
+            name: "MetaMask / OKX",
+            description: "Connect with MetaMask, OKX, or other extensions"
+          },
+          package: null
         }
       };
 
