@@ -70,26 +70,37 @@ async function connectWallet() {
 }
 
 async function swapToken() {
-  const amount = document.getElementById("amountFrom").value;
-  if (!amount || isNaN(amount) || Number(amount) <= 0) {
-    alert("Masukkan jumlah yang valid.");
-    return;
-  }
+  const amount = document.getElementById("amountFrom").value;
+  if (!amount || isNaN(amount) || Number(amount) <= 0) {
+    alert("Masukkan jumlah yang valid.");
+    return;
+  }
 
-  if (!userAddress) {
-    const connected = await connectWallet();
-    if (!connected) return;
-  }
+  if (!signer) {
+    const connected = await connectWallet();
+    if (!connected) return;
+  }
 
-  const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-  try {
-    const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
-    await tx.wait();
-    alert("Swap berhasil!");
-  } catch (err) {
-    console.error("Swap gagal:", err);
-    alert("Swap gagal: " + err.message);
-  }
+  const zusdtAddress = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
+  const ERC20_ABI = [
+    "function approve(address spender, uint256 amount) public returns (bool)"
+  ];
+
+  try {
+    const zusdt = new ethers.Contract(zusdtAddress, ERC20_ABI, signer);
+    const parsedAmount = ethers.utils.parseUnits(amount, 18);
+
+    const approvalTx = await zusdt.approve(swapContractAddress, parsedAmount);
+    await approvalTx.wait();
+
+    const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+    const tx = await contract.swapZUSDTtoZCT(parsedAmount);
+    await tx.wait();
+
+    alert("Swap berhasil!");
+  } catch (err) {
+    alert("Swap gagal: " + err.message);
+  }
 }
 
 window.addEventListener('load', async () => {
