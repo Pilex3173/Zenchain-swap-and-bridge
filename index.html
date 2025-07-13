@@ -57,6 +57,7 @@
   <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
   <script>
     const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
+    const zusdtAddress = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
     const swapContractABI = [
       {
         inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
@@ -69,6 +70,38 @@
 
     let web3Modal, provider, signer, userAddress;
 
+    async function switchToSepolia() {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0xaa36a7' }]
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: '0xaa36a7',
+                chainName: 'Sepolia',
+                rpcUrls: ['https://rpc.sepolia.org'],
+                nativeCurrency: {
+                  name: 'Sepolia ETH',
+                  symbol: 'ETH',
+                  decimals: 18
+                },
+                blockExplorerUrls: ['https://sepolia.etherscan.io']
+              }]
+            });
+          } catch (addError) {
+            alert("Gagal menambahkan jaringan Sepolia.");
+          }
+        } else {
+          alert("Switch jaringan dibatalkan atau gagal.");
+        }
+      }
+    }
+
     async function init() {
       const providerOptions = {
         walletconnect: {
@@ -80,16 +113,14 @@
         injected: {
           display: {
             name: "MetaMask / OKX",
-            description: "Connect with MetaMask, OKX, or other extensions"
-          },
-          package: null
+            description: "Connect with MetaMask or OKX"
+          }
         }
       };
 
       web3Modal = new window.Web3Modal.default({
         cacheProvider: false,
-        providerOptions,
-        theme: "dark"
+        providerOptions
       });
     }
 
@@ -102,8 +133,7 @@
 
         const { chainId } = await provider.getNetwork();
         if (chainId !== 11155111) {
-          alert("Pastikan jaringan kamu adalah Sepolia!");
-          return false;
+          await switchToSepolia();
         }
 
         document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
@@ -131,10 +161,21 @@
         if (!connected) return;
       }
 
-      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+      const ERC20_ABI = [
+        "function approve(address spender, uint256 amount) public returns (bool)"
+      ];
+
       try {
-        const tx = await contract.swapZUSDTtoZCT(ethers.utils.parseUnits(amount, 18));
+        const zusdt = new ethers.Contract(zusdtAddress, ERC20_ABI, signer);
+        const parsedAmount = ethers.utils.parseUnits(amount, 18);
+
+        const approvalTx = await zusdt.approve(swapContractAddress, parsedAmount);
+        await approvalTx.wait();
+
+        const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+        const tx = await contract.swapZUSDTtoZCT(parsedAmount);
         await tx.wait();
+
         alert("Swap berhasil!");
       } catch (err) {
         alert("Swap gagal: " + err.message);
