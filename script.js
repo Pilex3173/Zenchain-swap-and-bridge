@@ -13,43 +13,57 @@ let web3Modal;
 let provider;
 let signer;
 let userAddress;
+let instance;
 
 async function init() {
   const providerOptions = {
     walletconnect: {
       package: window.WalletConnectProvider.default,
       options: {
-        infuraId: "1c84a99f763144348d5fa28316d42b49"
+        infuraId: "1c84a99f763144348d5fa28316d42b49" // Infura untuk WalletConnect
+      }
+    },
+    okxwallet: {
+      package: window.okxwallet,
+      connector: async () => {
+        if (!window.okxwallet) {
+          alert("OKX Wallet belum terpasang. Silakan install dari Chrome Web Store.");
+          throw new Error("OKX Wallet tidak tersedia");
+        }
+        await window.okxwallet.request({ method: 'eth_requestAccounts' });
+        return window.okxwallet;
       }
     }
   };
 
   web3Modal = new window.Web3Modal.default({
     cacheProvider: false,
-    providerOptions
+    providerOptions,
+    theme: "dark"
   });
 }
 
 async function connectWallet() {
   try {
-    const instance = await web3Modal.connect();
+    instance = await web3Modal.connect();
     provider = new ethers.providers.Web3Provider(instance);
     signer = provider.getSigner();
     userAddress = await signer.getAddress();
+
+    const { chainId } = await provider.getNetwork();
+    if (chainId !== 11155111) {
+      alert("Pastikan kamu berada di jaringan Sepolia (Chain ID 11155111)");
+      return false;
+    }
 
     document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
       btn.textContent = `Connected: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
       btn.disabled = true;
     });
 
-    const { chainId } = await provider.getNetwork();
-    if (chainId !== 11155111) {
-      alert("Pastikan jaringan kamu adalah Sepolia!");
-      return false;
-    }
     return true;
   } catch (err) {
-    console.error("Connect wallet failed:", err);
+    console.error("Gagal connect wallet:", err);
     alert("Gagal koneksi wallet: " + err.message);
     return false;
   }
@@ -61,8 +75,11 @@ async function swapToken() {
     alert("Masukkan jumlah yang valid.");
     return;
   }
-  const connected = await connectWallet();
-  if (!connected) return;
+
+  if (!userAddress) {
+    const connected = await connectWallet();
+    if (!connected) return;
+  }
 
   const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
   try {
@@ -70,11 +87,17 @@ async function swapToken() {
     await tx.wait();
     alert("Swap berhasil!");
   } catch (err) {
+    console.error("Swap gagal:", err);
     alert("Swap gagal: " + err.message);
   }
 }
 
-window.addEventListener('load', init);
-document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
-  btn.addEventListener('click', connectWallet);
+window.addEventListener('load', async () => {
+  await init();
+
+  document.querySelectorAll('.wallet-btn, .connect-wallet').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!userAddress) await connectWallet();
+    });
+  });
 });
