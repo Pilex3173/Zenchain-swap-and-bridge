@@ -1,178 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PilexSwap</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    .balance-text { color: #ccc; font-size: 0.9em; margin-top: 4px; }
-    .connect-wallet { background-color: green; color: white; padding: 10px; border: none; cursor: pointer; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PilexSwap</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .balance-text { color: #ccc; font-size: 0.9em; margin-top: 4px; }
+    .connect-wallet { background-color: green; color: white; padding: 10px; border: none; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">PilexSwap</div>
-    <nav>
-      <a href="index.html">Trade</a>
-      <a href="pools.html">Pools</a>
-      <a href="faucet.html">Faucet</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="bridge.html">Bridge</a>
-    </nav>
-    <button class="wallet-btn" id="connectBtn">Connect to a wallet</button>
-  </header>
+  <header>
+    <div class="logo">PilexSwap</div>
+    <nav>
+      <a href="index.html">Trade</a>
+      <a href="pools.html">Pools</a>
+      <a href="faucet.html">Faucet</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="bridge.html">Bridge</a>
+    </nav>
+    <button class="wallet-btn" id="connectBtn">Connect to a wallet</button>
+  </header>
 
-  <main>
-    <section class="swap-box">
-      <div class="input-group">
-        <label>From</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" id="amountFrom" />
-          <select id="fromToken">
-            <option value="ZUSDT">ZUSDT</option>
-          </select>
-        </div>
-        <div id="zusdtBalance" class="balance-text">Balance: 0.0</div>
-      </div>
+  <main>
+    <section class="swap-box">
+      <div class="input-group">
+        <label>From</label>
+        <div class="input-row">
+          <input type="number" placeholder="0.0" id="amountFrom" />
+          <select id="fromToken">
+            <option value="ZUSDT">ZUSDT</option>
+            <option value="ZCT">ZCT</option>
+          </select>
+        </div>
+        <div id="zusdtBalance" class="balance-text">Balance: 0.0</div>
+        <div id="zctBalance" class="balance-text">Balance: 0.0</div>
+      </div>
 
-      <div class="arrow">↓</div>
+      <div class="arrow">↓</div>
 
-      <div class="input-group">
-        <label>To</label>
-        <div class="input-row">
-          <input type="number" placeholder="0.0" id="amountTo" disabled />
-          <select id="toToken">
-            <option value="ZCT">ZCT</option>
-          </select>
-        </div>
-        <div id="zctBalance" class="balance-text">Balance: 0.0</div>
-      </div>
+      <div class="input-group">
+        <label>To</label>
+        <div class="input-row">
+          <input type="number" placeholder="0.0" id="amountTo" disabled />
+          <select id="toToken">
+            <option value="ZCT">ZCT</option>
+            <option value="ZUSDT">ZUSDT</option>
+          </select>
+        </div>
+      </div>
 
-      <button class="connect-wallet">Swap</button>
-    </section>
-  </main>
+      <button class="connect-wallet">Swap</button>
+    </section>
+  </main>
 
-  <footer>
-    <p>© 2025 ZenSwap. All rights reserved.</p>
-  </footer>
+  <footer>
+    <p>© 2025 ZenSwap. All rights reserved.</p>
+  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
-  <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
-  <script>
-    const ZUSDT_ADDRESS = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
-    const ZCT_ADDRESS = "0xf8bff80BeCAc9939af1dBa3E587d0eA530D771c4";
-    const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
-    const RATE = 2; // Manual rate: 1 ZUSDT = 2 ZCT
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
+  <script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
+  <script>
+    const ZUSDT_ADDRESS = "0xAf8f71a176C3aDE603965E06Ce7100117411d919";
+    const ZCT_ADDRESS = "0xf8bff80BeCAc9939af1dBa3E587d0eA530D771c4";
+    const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
+    const RATE = 2; // Manual rate: 1 ZUSDT = 2 ZCT
 
-    const swapContractABI = [
-      {
-        inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
-        name: "swapZUSDTtoZCT",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-      }
-    ];
+    const swapContractABI = [
+      {
+        inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+        name: "swapZUSDTtoZCT",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
 
-    const erc20Abi = [
-      "function approve(address spender, uint256 amount) external returns (bool)",
-      "function balanceOf(address account) external view returns (uint256)"
-    ];
+    const erc20Abi = [
+      "function approve(address spender, uint256 amount) external returns (bool)",
+      "function balanceOf(address account) external view returns (uint256)"
+    ];
 
-    let web3Modal, provider, signer, userAddress;
+    let web3Modal, provider, signer, userAddress;
 
-    async function init() {
-      const providerOptions = {
-        walletconnect: {
-          package: window.WalletConnectProvider.default,
-          options: {
-            infuraId: "1c84a99f763144348d5fa28316d42b49"
-          }
-        },
-        injected: {
-          display: {
-            name: "MetaMask / OKX",
-            description: "Connect with MetaMask or OKX"
-          }
-        }
-      };
+    async function init() {
+      const providerOptions = {
+        walletconnect: {
+          package: window.WalletConnectProvider.default,
+          options: {
+            infuraId: "1c84a99f763144348d5fa28316d42b49"
+          }
+        },
+        injected: {
+          display: {
+            name: "MetaMask / OKX",
+            description: "Connect with MetaMask or OKX"
+          }
+        }
+      };
 
-      web3Modal = new window.Web3Modal.default({
-        cacheProvider: false,
-        providerOptions
-      });
-    }
+      web3Modal = new window.Web3Modal.default({
+        cacheProvider: false,
+        providerOptions
+      });
+    }
 
-    async function connectWallet() {
-      try {
-        const instance = await web3Modal.connect();
-        provider = new ethers.providers.Web3Provider(instance);
-        signer = provider.getSigner();
-        userAddress = await signer.getAddress();
+    async function connectWallet() {
+      try {
+        const instance = await web3Modal.connect();
+        provider = new ethers.providers.Web3Provider(instance);
+        signer = provider.getSigner();
+        userAddress = await signer.getAddress();
 
-        const { chainId } = await provider.getNetwork();
-        if (chainId !== 11155111) {
-          alert("Pastikan jaringan kamu adalah Sepolia!");
-          return;
-        }
+        const { chainId } = await provider.getNetwork();
+        if (chainId !== 11155111) {
+          alert("Pastikan jaringan kamu adalah Sepolia!");
+          return;
+        }
 
-        document.querySelector('.wallet-btn').textContent = `Connected: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
-        document.querySelector('.connect-wallet').textContent = 'Swap';
-        document.querySelector('.connect-wallet').disabled = false;
+        document.querySelector('.wallet-btn').textContent = `Connected: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+        document.querySelector('.connect-wallet').textContent = 'Swap';
+        document.querySelector('.connect-wallet').disabled = false;
 
-        updateBalances();
-      } catch (err) {
-        alert("Gagal koneksi wallet: " + err.message);
-      }
-    }
+        updateBalances();
+      } catch (err) {
+        alert("Gagal koneksi wallet: " + err.message);
+      }
+    }
 
-    async function updateBalances() {
-      const zusdt = new ethers.Contract(ZUSDT_ADDRESS, erc20Abi, provider);
-      const zct = new ethers.Contract(ZCT_ADDRESS, erc20Abi, provider);
+    async function updateBalances() {
+      const zusdt = new ethers.Contract(ZUSDT_ADDRESS, erc20Abi, provider);
+      const zct = new ethers.Contract(ZCT_ADDRESS, erc20Abi, provider);
 
-      const [bal1, bal2] = await Promise.all([
-        zusdt.balanceOf(userAddress),
-        zct.balanceOf(userAddress)
-      ]);
+      const [bal1, bal2] = await Promise.all([
+        zusdt.balanceOf(userAddress),
+        zct.balanceOf(userAddress)
+      ]);
 
-      document.getElementById("zusdtBalance").textContent = `Balance: ${ethers.utils.formatUnits(bal1, 18)}`;
-      document.getElementById("zctBalance").textContent = `Balance: ${ethers.utils.formatUnits(bal2, 18)}`;
-    }
+      document.getElementById("zusdtBalance").textContent = `Balance: ${ethers.utils.formatUnits(bal1, 18)}`;
+      document.getElementById("zctBalance").textContent = `Balance: ${ethers.utils.formatUnits(bal2, 18)}`;
+    }
 
-    document.getElementById("amountFrom").addEventListener("input", () => {
-      const input = parseFloat(document.getElementById("amountFrom").value);
-      document.getElementById("amountTo").value = isNaN(input) ? 0 : input * RATE;
-    });
+    document.getElementById("amountFrom").addEventListener("input", () => {
+      const input = parseFloat(document.getElementById("amountFrom").value);
+      const fromToken = document.getElementById("fromToken").value;
+      let result = 0;
+      if (!isNaN(input)) {
+        result = fromToken === "ZUSDT" ? input * RATE : input / RATE;
+      }
+      document.getElementById("amountTo").value = result;
+    });
 
-    async function swapToken() {
-      const amount = document.getElementById("amountFrom").value;
-      if (!amount || isNaN(amount) || Number(amount) <= 0) {
-        alert("Masukkan jumlah yang valid.");
-        return;
-      }
+    async function swapToken() {
+      const amount = document.getElementById("amountFrom").value;
+      const fromToken = document.getElementById("fromToken").value;
+      const toToken = document.getElementById("toToken").value;
 
-      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
-      try {
-        const parsed = ethers.utils.parseUnits(amount, 18);
-        const approveTx = await new ethers.Contract(ZUSDT_ADDRESS, erc20Abi, signer).approve(swapContractAddress, parsed);
-        await approveTx.wait();
+      if (!amount || isNaN(amount) || Number(amount) <= 0) {
+        alert("Masukkan jumlah yang valid.");
+        return;
+      }
 
-        const tx = await contract.swapZUSDTtoZCT(parsed);
-        await tx.wait();
-        alert("Swap berhasil!");
-        updateBalances();
-      } catch (err) {
-        alert("Swap gagal: " + err.message);
-      }
-    }
+      if (fromToken === toToken) {
+        alert("Token asal dan tujuan tidak boleh sama.");
+        return;
+      }
 
-    window.addEventListener('load', async () => {
-      await init();
-      document.getElementById('connectBtn').addEventListener('click', connectWallet);
-      document.querySelector('.connect-wallet').addEventListener('click', swapToken);
-    });
-  </script>
+      try {
+        const parsed = ethers.utils.parseUnits(amount, 18);
+        const tokenToApprove = fromToken === "ZUSDT" ? ZUSDT_ADDRESS : ZCT_ADDRESS;
+        const tokenContract = new ethers.Contract(tokenToApprove, erc20Abi, signer);
+        const approveTx = await tokenContract.approve(swapContractAddress, parsed);
+        await approveTx.wait();
+
+        const swapContract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+
+        if (fromToken === "ZUSDT") {
+          const tx = await swapContract.swapZUSDTtoZCT(parsed);
+          await tx.wait();
+        } else {
+          alert("Swap dari ZCT ke ZUSDT belum didukung di smart contract.");
+          return;
+        }
+
+        alert("Swap berhasil!");
+        updateBalances();
+      } catch (err) {
+        alert("Swap gagal: " + err.message);
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      await init();
+      document.getElementById('connectBtn').addEventListener('click', connectWallet);
+      document.querySelector('.connect-wallet').addEventListener('click', swapToken);
+    });
+  </script>
 </body>
 </html>
