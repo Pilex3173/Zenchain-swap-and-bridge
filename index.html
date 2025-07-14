@@ -65,13 +65,20 @@
   <script>
     const ZUSDT_ADDRESS = "0xaf8f71a176c3ade603965e06ce7100117411d919";
     const ZCT_ADDRESS = "0xf8bff80becac9939af1dba3e587d0ea530d771c4";
-    const swapContractAddress = "0x32A7Acf247F49aAf49A69Fd812dEb3F4fCEF650B";
-    const RATE = 2; // 1 ZUSDT = 2 ZCT (manual rate)
+    const swapContractAddress = "0xF1F44c165F0cFc8B34EEC10b0CF5f499B080d4a8";
+    const RATE = 2; // 1 ZUSDT = 2 ZCT
 
     const swapContractABI = [
       {
         inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
         name: "swapZUSDTtoZCT",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+        name: "swapZCTtoZUSDT",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function"
@@ -173,8 +180,8 @@
           const tx = await contract.swapZUSDTtoZCT(parsed);
           await tx.wait();
         } else {
-          alert("Fungsi swapZCTtoZUSDT belum tersedia di smart contract.");
-          return;
+          const tx = await contract.swapZCTtoZUSDT(parsed);
+          await tx.wait();
         }
 
         alert("Swap berhasil!");
