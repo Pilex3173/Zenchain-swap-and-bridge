@@ -1,188 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PilexSwap | Faucet</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      background-color: #111;
-      color: #ccfffd;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background: #000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    nav a {
-      margin: 0 10px;
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .wallet-btn {
-      background: green;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      cursor: pointer;
-    }
-
-    main {
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .faucet-form {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .faucet-form input,
-    .faucet-form select {
-      padding: 0.7rem 1rem;
-      border-radius: 6px;
-      border: none;
-      width: 300px;
-    }
-
-    .faucet-form select {
-      background: #fff;
-      color: #000;
-      width: 200px;
-    }
-
-    .faucet-form button {
-      padding: 0.7rem 1.5rem;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .status-message {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-    }
-
-    footer {
-      background-color: #000;
-      color: #ccc;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PilexSwap</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    nav a {
+      margin: 0 10px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .header-right {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .wallet-btn, .keplr-btn {
+      background: green;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    select#networkSelector {
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+    }
+    .swap-box {
+      max-width: 400px;
+      margin: 3rem auto;
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+    }
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    input, select {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+    }
+    .arrow {
+      text-align: center;
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+    .connect-wallet {
+      background: green;
+      border: none;
+      padding: 10px;
+      color: white;
+      width: 100%;
+      cursor: pointer;
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup-box {
+      background: #fff;
+      color: #000;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: center;
+    }
+    .popup-box button {
+      margin-top: 1rem;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">PilexSwap</div>
-    <nav>
-      <a href="index.html">Trade</a>
-      <a href="pools.html">Pools</a>
-      <a href="faucet.html">Faucet</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="bridge.html">Bridge</a>
-    </nav>
-    <button class="wallet-btn">Connect Wallet</button>
-  </header>
 
-  <main>
-    <h1>Faucet</h1>
-    <p>Enter your wallet address and select a testnet to receive tokens.</p>
+<header>
+  <div class="logo">PilexSwap</div>
+  <nav>
+    <a href="#">Trade</a>
+    <a href="#">Pools</a>
+    <a href="#">Faucet</a>
+    <a href="#">NFTs</a>
+    <a href="#">Bridge</a>
+  </nav>
+  <div class="header-right">
+    <select id="networkSelector">
+      <option value="11155111">Sepolia</option>
+      <option value="zenchain">Zenchain Testnet</option>
+      <option value="lumera">Lumera Testnet</option>
+      <option value="xos">XOS Testnet</option>
+      <option value="empe">EMPE Testnet</option>
+      <option value="safro">Safrochain Testnet</option>
+      <option value="kiichain">Kiichain Oro Testnet</option>
+      <option value="helios">Helios Testnet</option>
+    </select>
+    <button class="wallet-btn" id="connectBtn">Connect Wallet</button>
+    <button class="keplr-btn" onclick="connectKeplr()">Connect Keplr</button>
+  </div>
+</header>
 
-    <div class="faucet-form">
-      <input type="text" placeholder="Your wallet address" id="walletAddress" />
-      <select id="networkSelect">
-        <option value="zenchain">ZenChain Testnet</option>
-        <option value="lumera">Lumera Testnet</option>
-        <option value="xos">XOS Testnet</option>
-        <option value="empe">EMPE Testnet</option>
-        <option value="safro">SafroChain Testnet</option>
-        <option value="kiichain">Kiichain Oro Testnet</option>
-        <option value="helios">Helios Testnet</option>
-      </select>
-      <button onclick="requestFaucet()">Request Faucet</button>
-    </div>
+<main>
+  <section class="swap-box">
+    <div class="input-group">
+      <label>From</label>
+      <div class="input-row">
+        <input type="number" placeholder="0.0" id="amountFrom" />
+        <select id="fromToken">
+          <option value="ZUSDT">ZUSDT</option>
+          <option value="ZCT">ZCT</option>
+        </select>
+      </div>
+    </div>
 
-    <div class="status-message" id="statusMessage"></div>
-  </main>
+    <div class="arrow">↓</div>
 
-  <footer>
-    <p>© 2025 PilexSwap. All rights reserved.</p>
-  </footer>
+    <div class="input-group">
+      <label>To</label>
+      <div class="input-row">
+        <input type="number" placeholder="0.0" id="amountTo" disabled />
+        <select id="toToken">
+          <option value="ZCT">ZCT</option>
+          <option value="ZUSDT">ZUSDT</option>
+        </select>
+      </div>
+    </div>
 
-  <script>
-    const faucetUrls = {
-      zenchain: "https://faucet.zenchainlabs.org/request",
-      lumera: "https://faucet.lumera.network/request",
-      xos: "https://faucet.xoschain.org/request",
-      empe: "https://faucet.empe.io/request",
-      safro: "https://faucet.safrochain.org/request",
-      kiichain: "https://faucet.kiichain.org/request",
-      helios: "https://faucet.helioschainlabs.org/request"
-    };
+    <button class="connect-wallet">Swap</button>
+  </section>
+</main>
 
-    async function requestFaucet() {
-      const address = document.getElementById("walletAddress").value.trim();
-      const network = document.getElementById("networkSelect").value;
-      const statusEl = document.getElementById("statusMessage");
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <h3>Confirm Swap</h3>
+    <p id="popupText"></p>
+    <button id="confirmSwap">Confirm</button>
+    <button onclick="document.getElementById('popup').style.display='none'">Cancel</button>
+  </div>
+</div>
 
-      if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
-        statusEl.textContent = "Please enter a valid wallet address.";
-        statusEl.style.color = "orange";
-        return;
-      }
+<footer style="text-align: center; padding: 1rem;">
+  <p>© 2025 PilexSwap. All rights reserved.</p>
+</footer>
 
-      const faucetUrl = faucetUrls[network];
-      if (!faucetUrl) {
-        statusEl.textContent = "Invalid network selection.";
-        statusEl.style.color = "red";
-        return;
-      }
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
+<script src="https://unpkg.com/web3modal@1.9.8/dist/index.js"></script>
 
-      statusEl.textContent = "Requesting faucet, please wait...";
-      statusEl.style.color = "white";
+<script>
+  const ZUSDT_ADDRESS = "0xaf8f71a176c3ade603965e06ce7100117411d919";
+  const ZCT_ADDRESS = "0xf8bff80becac9939af1dba3e587d0ea530d771c4";
+  const swapContractAddress = "0xF1F44c165F0cFc8B34EEC10b0CF5f499B080d4a8";
+  const RATE = 2;
 
-      try {
-        const response = await fetch(faucetUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ address })
-        });
+  const swapContractABI = [
+    { inputs: [{ name: "amount", type: "uint256" }], name: "swapZUSDTtoZCT", outputs: [], stateMutability: "nonpayable", type: "function" },
+    { inputs: [{ name: "amount", type: "uint256" }], name: "swapZCTtoZUSDT", outputs: [], stateMutability: "nonpayable", type: "function" }
+  ];
 
-        const result = await response.json();
+  const erc20Abi = [
+    "function approve(address spender, uint256 amount) external returns (bool)",
+    "function balanceOf(address account) external view returns (uint256)"
+  ];
 
-        if (response.ok) {
-          statusEl.textContent = result.message || "Faucet request successful!";
-          statusEl.style.color = "lightgreen";
-        } else {
-          statusEl.textContent = result.message || "Faucet request failed.";
-          statusEl.style.color = "red";
-        }
-      } catch (err) {
-        statusEl.textContent = "Error: " + err.message;
-        statusEl.style.color = "red";
-      }
-    }
-  </script>
+  let web3Modal, provider, signer, userAddress;
+
+  async function init() {
+    web3Modal = new window.Web3Modal.default({
+      cacheProvider: false,
+      providerOptions: {
+        walletconnect: {
+          package: window.WalletConnectProvider.default,
+          options: {
+            infuraId: "1c84a99f763144348d5fa28316d42b49"
+          }
+        }
+      }
+    });
+  }
+
+  async function connectWallet() {
+    try {
+      const instance = await web3Modal.connect();
+      provider = new ethers.providers.Web3Provider(instance);
+      signer = provider.getSigner();
+      userAddress = await signer.getAddress();
+      const { chainId } = await provider.getNetwork();
+
+      if (chainId !== 11155111) {
+        alert("Please switch to Sepolia network!");
+        return;
+      }
+
+      document.getElementById("connectBtn").textContent = `Connected: ${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
+      document.querySelector('.connect-wallet').disabled = false;
+    } catch (err) {
+      alert("Wallet connection failed: " + err.message);
+    }
+  }
+
+  function connectKeplr() {
+    if (!window.keplr) {
+      alert("Keplr Wallet not found. Please install it first.");
+      return;
+    }
+
+    const chainId = "osmosis-1"; // Replace with your Cosmos chain ID
+    window.keplr.enable(chainId).then(() => {
+      window.getOfflineSigner(chainId).getAccounts().then((accounts) => {
+        alert(`Keplr connected: ${accounts[0].address}`);
+      });
+    }).catch((err) => {
+      alert("Keplr connection failed: " + err.message);
+    });
+  }
+
+  document.getElementById("amountFrom").addEventListener("input", () => {
+    const val = parseFloat(document.getElementById("amountFrom").value);
+    const fromToken = document.getElementById("fromToken").value;
+    const rate = fromToken === "ZUSDT" ? RATE : 1 / RATE;
+    document.getElementById("amountTo").value = isNaN(val) ? 0 : (val * rate).toFixed(6);
+  });
+
+  document.querySelector('.connect-wallet').addEventListener('click', () => {
+    const amount = document.getElementById("amountFrom").value;
+    const fromToken = document.getElementById("fromToken").value;
+    const toToken = document.getElementById("toToken").value;
+
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Enter a valid amount.");
+      return;
+    }
+
+    document.getElementById("popupText").textContent = `Swap ${amount} ${fromToken} → ${toToken}`;
+    document.getElementById("popup").style.display = "flex";
+  });
+
+  document.getElementById("confirmSwap").addEventListener("click", async () => {
+    document.getElementById("popup").style.display = "none";
+
+    const amount = document.getElementById("amountFrom").value;
+    const fromToken = document.getElementById("fromToken").value;
+    const parsed = ethers.utils.parseUnits(amount, 18);
+    const tokenAddress = fromToken === "ZUSDT" ? ZUSDT_ADDRESS : ZCT_ADDRESS;
+
+    try {
+      const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, signer);
+      const approveTx = await tokenContract.approve(swapContractAddress, parsed);
+      await approveTx.wait();
+
+      const contract = new ethers.Contract(swapContractAddress, swapContractABI, signer);
+
+      const tx = fromToken === "ZUSDT"
+        ? await contract.swapZUSDTtoZCT(parsed)
+        : await contract.swapZCTtoZUSDT(parsed);
+
+      await tx.wait();
+      alert("Swap successful!");
+    } catch (err) {
+      alert("Swap failed: " + err.message);
+    }
+  });
+
+  window.addEventListener('load', init);
+  document.getElementById('connectBtn').addEventListener('click', connectWallet);
+</script>
 </body>
 </html>
