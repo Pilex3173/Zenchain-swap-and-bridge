@@ -112,13 +112,8 @@
     <div class="faucet-form">
       <input type="text" placeholder="Your wallet address" id="walletAddress" />
       <select id="networkSelect">
-        <option value="zenchain">ZenChain Testnet</option>
-        <option value="lumera">Lumera Testnet</option>
-        <option value="xos">XOS Testnet</option>
-        <option value="empe">EMPE Testnet</option>
-        <option value="safro">SafroChain Testnet</option>
-        <option value="kiichain">Kiichain Oro Testnet</option>
-        <option value="helios">Helios Testnet</option>
+        <option value="ZUSDT">ZUSDT (Sepolia)</option>
+        <option value="ZCT">ZCT (Sepolia)</option>
       </select>
       <button onclick="requestFaucet()">Request Faucet</button>
     </div>
@@ -131,31 +126,14 @@
   </footer>
 
   <script>
-    const faucetUrls = {
-      zenchain: "https://faucet.zenchainlabs.org/request",
-      lumera: "https://faucet.lumera.network/request",
-      xos: "https://faucet.xoschain.org/request",
-      empe: "https://faucet.empe.io/request",
-      safro: "https://faucet.safrochain.org/request",
-      kiichain: "https://faucet.kiichain.org/request",
-      helios: "https://faucet.helioschainlabs.org/request"
-    };
-
     async function requestFaucet() {
       const address = document.getElementById("walletAddress").value.trim();
-      const network = document.getElementById("networkSelect").value;
+      const token = document.getElementById("networkSelect").value;
       const statusEl = document.getElementById("statusMessage");
 
-      if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+      if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
         statusEl.textContent = "Please enter a valid wallet address.";
         statusEl.style.color = "orange";
-        return;
-      }
-
-      const faucetUrl = faucetUrls[network];
-      if (!faucetUrl) {
-        statusEl.textContent = "Invalid network selection.";
-        statusEl.style.color = "red";
         return;
       }
 
@@ -163,10 +141,10 @@
       statusEl.style.color = "white";
 
       try {
-        const response = await fetch(faucetUrl, {
+        const response = await fetch("http://localhost:3001/claim", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ address })
+          body: JSON.stringify({ address, token })
         });
 
         const result = await response.json();
